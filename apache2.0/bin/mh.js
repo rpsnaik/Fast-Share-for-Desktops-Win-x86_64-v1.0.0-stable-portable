@@ -1,0 +1,12 @@
+var WshShell = WScript.CreateObject("WScript.Shell");
+var BDir = WshShell.CurrentDirectory;
+var UpDir = BDir.split("\\bin").join("");
+var ServerRoot = UpDir.split("\\").join("/");
+fso = new ActiveXObject("Scripting.FileSystemObject");
+var htold = fso.OpenTextFile(UpDir+"\\conf\\httpd.portable.conf");
+var httpd = htold.ReadAll();
+var compile = httpd.split("{$PORTABLEROOT}").join(ServerRoot);
+var sfile = UpDir+"\\conf\\httpd.conf";
+var htnew = fso.CreateTextFile(sfile, true);
+htnew.Write(compile);
+htnew.Close();
